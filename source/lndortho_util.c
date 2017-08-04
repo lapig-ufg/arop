@@ -878,23 +878,39 @@ int convertCoor(BASE_LANDSAT *base, double *bx, double *by, PROJECTION *proj, do
 void getSatMajorAxis(char *satellite, LANDSAT *lnd)
 {
   if(strcasecmp(satellite, "Landsat1")==0)
-    lnd->satMajorAxis = Landsat1;
+   lnd->satMajorAxis = Landsat1;
   else if(strcasecmp(satellite, "Landsat2")==0)
-    lnd->satMajorAxis = Landsat2; 
+    lnd->satMajorAxis = Landsat2;
   else if(strcasecmp(satellite, "Landsat3")==0)
-    lnd->satMajorAxis = Landsat3; 
+    lnd->satMajorAxis = Landsat3;
   else if(strcasecmp(satellite, "Landsat4")==0)
-    lnd->satMajorAxis = Landsat4; 
+    lnd->satMajorAxis = Landsat4;
   else if(strcasecmp(satellite, "Landsat5")==0)
-    lnd->satMajorAxis = Landsat5; 
+    lnd->satMajorAxis = Landsat5;
   else if(strcasecmp(satellite, "Landsat7")==0)
-    lnd->satMajorAxis = Landsat7; 
-  else if(strcasecmp(satellite, "CBERS1")==0)
-    lnd->satMajorAxis = CBERS1; 
+    lnd->satMajorAxis = Landsat7;
+  else if(strcasecmp(satellite, "Landsat8")==0)
+    lnd->satMajorAxis = Landsat8;
+  else if(strcasecmp(satellite, "CBERS4")==0)
+    lnd->satMajorAxis = CBERS4;
+  else if(strcasecmp(satellite, "CBERS2B")==0)
+    lnd->satMajorAxis = CBERS2B;
   else if(strcasecmp(satellite, "CBERS2")==0)
-    lnd->satMajorAxis = CBERS2; 
-  else if(strcasecmp(satellite, "TERRA")==0)
-    lnd->satMajorAxis = TERRA;
+    lnd->satMajorAxis = CBERS2;
+  else if(strcasecmp(satellite, "ResourceSat2")==0)
+    lnd->satMajorAxis = ResourceSat2;
+  else if(strcasecmp(satellite, "ResourceSat1")==0)
+    lnd->satMajorAxis = ResourceSat1;
+  else if(strcasecmp(satellite, "UkDmc")==0)
+    lnd->satMajorAxis = UkDmc;
+  else if(strcasecmp(satellite, "Terra")==0)
+    lnd->satMajorAxis = Terra;
+  else if(strcasecmp(satellite, "Sentinel2A")==0)
+    lnd->satMajorAxis = Sentinel2A;
+  else if(strcasecmp(satellite, "ProbaV")==0)
+    lnd->satMajorAxis = ProbaV;
+  else if(strcasecmp(satellite, "SuomiNpp")==0)
+    lnd->satMajorAxis = SuomiNpp;
   else if(strcasecmp(satellite, "AWIFS")==0)
     lnd->satMajorAxis = AWIFS;
   else if(strcasecmp(satellite, "HJ1")==0)
@@ -933,6 +949,31 @@ int makeCoarse(LANDSAT *fine, LANDSAT *coarse)
   return SUCCESS;
 }
 
+char* concat(const char *s1, const char *s2)
+{
+    char *result = malloc(strlen(s1)+strlen(s2)+1);//+1 for the zero-terminator
+    
+    strcpy(result, s1);
+    strcat(result, s2);
+
+    return result;
+}
+
+char* randomFilename(char* suffix)
+{
+  unsigned int randval;
+  FILE *f;
+
+  f = fopen("/dev/random", "r");
+  fread(&randval, sizeof(randval), 1, f);
+  fclose(f);
+
+  char strRandom[20];
+  sprintf(strRandom, "%u", randval);
+
+  char* filename = concat(strRandom, suffix);
+  return filename;
+}
 
 /**
    CONVERT ACTUAL INPUT/OUTPUT SPACE TO WORKING SPACE 
@@ -976,16 +1017,20 @@ int convertSpace(BASE_LANDSAT *base, WARP_LANDSAT *warp, OUT_LANDSAT *out,
     printf("\n\tAdjusted COARSE_MAX_SHIFT = %d", CP_KEYS.COARSE_MAX_SHIFT);
   }
 
+  char* twBaseFilename = randomFilename("temp_working_base.dat");
+  char* twWarpFilename = randomFilename("temp_working_warp.dat");
+  char* twOutFilename = randomFilename("temp_working_out.dat");
+    
   /* create working file for base, warp and output */
   /* for base file */
   copyLandsat(&(wbase->lnd), &(base->lnd));
-  strcpy(wbase->lnd.fileName, "temp_working_base.dat");
+  strcpy(wbase->lnd.fileName, twBaseFilename);
   wbase->utm_zone = base->utm_zone;
   wbase->datum = base->datum;
 
   /* for warp file (need only one band for working file) */
   copyLandsat(&(wwarp->lnd), &(warp->lnd));
-  strcpy(wwarp->lnd.fileName, "temp_working_warp.dat");
+  strcpy(wwarp->lnd.fileName, twWarpFilename);
   wwarp->nbands = 1;
   wwarp->nbyte[0] = 1;
   strcpy(wwarp->fileName[0], wwarp->lnd.fileName);
@@ -997,7 +1042,7 @@ int convertSpace(BASE_LANDSAT *base, WARP_LANDSAT *warp, OUT_LANDSAT *out,
   copyLandsat(&(wout->lnd), &(out->lnd));
   wout->nbands = 1;
   wout->nbyte[0] = 1;
-  strcpy(wout->fileName[0], "temp_working_out.dat");
+  strcpy(wout->fileName[0], twOutFilename);
   strcpy(wout->lnd.fileName, wout->fileName[0]);
   if((wout->fp[0] = fopen(wout->fileName[0], "w+b"))==NULL) {
     fprintf(stderr, "\nError in opening working space output file");

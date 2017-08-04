@@ -28,14 +28,17 @@ int preliminaryRegistration(BASE_LANDSAT  *wbase, WARP_LANDSAT  *wwarp)
   /* coarse resolution base and warp image for preliminary registration */
   LANDSAT cbase, cwarp;
 
+  char* twBaseCoarseFilename = randomFilename("temp_working_base_coarse.dat");
+  char* twWarpCoarseFilename = randomFilename("temp_working_warp_coarse.dat");
+
   printf("\tcreating temporary coarse resolution images ...\n");  
-  strcpy(cbase.fileName, "temp_working_base_coarse.dat");
+  strcpy(cbase.fileName, twBaseCoarseFilename);
   if(makeCoarse(&(wbase->lnd), &cbase) == FAILURE) {
     fprintf(stderr, "Make coarse resolution file %s error!\n", cbase.fileName);
     return FAILURE;
   }
 
-  strcpy(cwarp.fileName, "temp_working_warp_coarse.dat");
+  strcpy(cwarp.fileName, twWarpCoarseFilename);
   if(makeCoarse(&(wwarp->lnd), &cwarp) == FAILURE) {
     fprintf(stderr, "Make coarse resolution file %s error!\n", cwarp.fileName);
     return FAILURE;

@@ -70,11 +70,19 @@ enum Sat_Major_Axis {Landsat1 = 7285438,
 		     Landsat2 = 7285989,
 		     Landsat3 = 7285776,
 		     Landsat4 = 7083465,
-		     Landsat5 = 7083465,
-		     Landsat7 = 7077700,
-		     CBERS1   = 7148860,
-		     CBERS2   = 7115798,
-		     TERRA    = 7085000,
+         Landsat5 = 6971000,
+         Landsat7 = 7080000,
+		     Landsat8 = 7080000,
+         CBERS4 = 7151000,
+         CBERS2B = 7151000,
+         CBERS2 = 7151000,
+         ResourceSat2 = 7197000,
+         ResourceSat1 = 7159000,
+         UkDmc = 7010000,
+         Terra = 7080000,
+         Sentinel2A = 7167000,
+         ProbaV = 7193000,
+         SuomiNpp = 7205000,
 		     AWIFS    = 7195110,
 		     HJ1      = 7020097,
 		     MySensor = 7100000};
@@ -325,6 +333,8 @@ int  aggregateImage(LANDSAT *fine, LANDSAT *coarse);
 int  writeENVIheader(WARP_LANDSAT *warp, OUT_LANDSAT *out);
 void rotation(double x, double y, double *x1, double *y1, double angle);
 void copyLandsat(LANDSAT *dest, LANDSAT *src);
+char* concat(const char *s1, const char *s2);
+char* randomFilename(char* suffix);
 int  createTempWarp(WARP_LANDSAT  *twarp, WARP_LANDSAT  *warp);
 void updateOutCoor(LANDSAT *src, LANDSAT *dest);
 void usage(char *argv[]);
@@ -336,8 +346,8 @@ void alloc_3dim_contig (void ****, int, int, int, int);
 void free_2dim_contig  (void **);
 void free_3dim_contig  (void ***);
 
-/*#define REG_DEBUG
-  #define DEBUG*/
+/*#define REG_DEBUG */
+/*  #define DEBUG*/
 #ifdef DEBUG
 #define DEBUG_icol 453
 #define DEBUG_irow 1325

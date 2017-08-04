@@ -1,0 +1,133 @@
+PARAMETER_FILE
+###################
+# define base image
+###################
+# define input file type, use GEOTIFF or BINARY
+BASE_FILE_TYPE = GEOTIFF
+# number of samples (columns) or use value from GEOTIFF file (-1)
+BASE_NSAMPLE = -1
+# number of lines (rows) or use value from GEOTIFF file (-1)
+BASE_NLINE = -1
+# pixel size in meters
+BASE_PIXEL_SIZE = 28.5
+# upper left coordinate in meters or use value from GEOTIFF file (-1)
+BASE_UPPER_LEFT_CORNER = -1, -1
+# base image for "r" and "b" options (one band)
+BASE_LANDSAT = p015r034_7t19990930_z18_nn50.tif
+# base image must be in UTM projection for this version
+# use positive UTM for North and negative for South
+UTM_ZONE = 18
+# supported satellites: Landsat 1-5 and Landsat 7
+BASE_SATELLITE = Landsat7
+
+####################
+# define warp images
+####################
+# define input file type, use GEOTIFF or BINARY
+WARP_FILE_TYPE = BINARY
+# number of samples (columns)
+WARP_NSAMPLE = 4980
+# number of lines (rows)
+WARP_NLINE = 4200
+# pixel size in meters
+WARP_PIXEL_SIZE = 15.0
+# upper left coordinate can be in meters or degrees (only need one)
+# define upper left coordinate in meters
+# WARP_UPPER_LEFT_CORNER =
+# define upper left coordinate in degrees
+#WARP_UPPER_LEFT_CORNER_DEGREE = -78.509630, 37.575253
+# supported satellites: Landsat 1-5, Landsat 7, TERRA, CBERS1, CBERS2, AWIFS
+WARP_SATELLITE = TERRA
+# sensor pointing angle in degrees (for ASTER)
+WARP_SATELLITE_POINTINGANGLE = 5.674000
+# map orientation angle in degrees for warp image
+WARP_ORIENTATION_ANGLE = -9.049154
+# number of input bands
+WARP_NBANDS = 9
+# list each band filename separated by comma 
+WARP_LANDSAT_BAND =AST_L1B_00310232005160936_20060603020838_7406.b1,
+AST_L1B_00310232005160936_20060603020838_7406.b2,
+AST_L1B_00310232005160936_20060603020838_7406.b3,
+AST_L1B_00310232005160936_20060603020838_7406.b4,
+AST_L1B_00310232005160936_20060603020838_7406.b5,
+AST_L1B_00310232005160936_20060603020838_7406.b6
+AST_L1B_00310232005160936_20060603020838_7406.b7,
+AST_L1B_00310232005160936_20060603020838_7406.b8,
+AST_L1B_00310232005160936_20060603020838_7406.b9
+# define data type for each band in: 1=8-bit; 2=16-bit
+WARP_BAND_DATA_TYPE = 1 1 1 1 1 1 1 1 1
+# define matching warp band to BASE_LANDSAT
+WARP_BASE_MATCH_BAND =
+AST_L1B_00310232005160936_20060603020838_7406.b4
+# define projection for warp image if different from base image
+# don't need these information if warp image projection is same as base
+# define projection in GCTPC format (see GCTPC documents for details)
+# 0=GEO; 1=UTM (default: UTM)
+WARP_PROJECTION_CODE = 1
+# use positive UTM for North and negative for South
+WARP_UTM_ZONE = 17
+# 15 GCTPC projection parameters (default: 0.0; not required for UTM)
+# WARP_PROJECTION_PARAM =
+# 0=radians; 1=US feet; 2=meters; 3=seconds of arc; 4=degree of arc
+# 5=international feet (default: meters)
+WARP_UNIT = 2
+# 0=Clarke 1866; 8=GRS 1980; 12=WGS 84 (default: WGS 84)
+WARP_DATUM = 12
+
+######################
+# define output images
+######################
+# define output pixel resolution
+OUT_PIXEL_SIZE = 28.5
+# define resampling approach (NN, BI, CC, AGG)
+# NN for nearest neighbor,
+# BI for bilinear interpolation
+# CC for cubic convolution
+# AGG for pixel aggregation
+RESAMPLE_METHOD = AGG
+# define image extent for the output (BASE, WARP, DEF)
+# BASE uses base map extent
+# WARP uses warp map extent
+# DEF takes user defined map extent
+OUT_EXTENT = WARP
+# if DEF is defined, the following two lines need to be defined (in meters)
+# OUT_UPPER_LEFT_CORNER =
+# OUT_LOWER_RIGHT_CORNER =
+# define corresponding output files for each band separated by comma
+OUT_LANDSAT_BAND =
+Ortho.AST_L1B_00310232005160936_20060603020838_7406.b1,
+Ortho.AST_L1B_00310232005160936_20060603020838_7406.b2, 
+Ortho.AST_L1B_00310232005160936_20060603020838_7406.b3,
+Ortho.AST_L1B_00310232005160936_20060603020838_7406.b4,
+Ortho.AST_L1B_00310232005160936_20060603020838_7406.b5,
+Ortho.AST_L1B_00310232005160936_20060603020838_7406.b6,
+Ortho.AST_L1B_00310232005160936_20060603020838_7406.b7,
+Ortho.AST_L1B_00310232005160936_20060603020838_7406.b8,
+Ortho.AST_L1B_00310232005160936_20060603020838_7406.b9
+# define one corresponding output matching band for geolocation verification
+# define one band matching to BASE_LANDSAT
+OUT_BASE_MATCH_BAND =
+Ortho.AST_L1B_00310232005160936_20060603020838_7406.b4
+# the maximum degree of polynomial transformation (0, 1, 2)
+# note that 2nd degree is not recommended unless have to
+OUT_BASE_POLY_ORDER = 1
+# ancillary inputs for orthorectification process
+# define terrain elevation file (must be in GeoTIFF format)
+# the SRTM DEM data in GeoTIFF format can be downloaded from the UMD GLCF
+INPUT_DEM_FILE = SRTM_u01_p015r034.tif
+# define projection for DEM data if it’s different from base image
+# projection information is not needed if projection for DEM data is same as base image
+# define projection in GCTPC format (see GCTPC documents for details) (default: UTM)
+# DEM_PROJECTION_CODE =
+# use positive UTM for North and negative for South
+# DEM_UTM_ZONE =
+# 15 GCTPC projection parameters (default: 0.0)
+# DEM_PROJECTION_PARAM =
+# 0=radians; 1=US feet; 2=meters; 3=seconds of arc; 4=degree of arc
+# 5=international feet (default: meters)
+# DEM_UNIT =
+# 0=Clarke 1866; 8=GRS 1980; 12=WGS 84 (default: WGS 84)
+# DEM_DATUM =
+# tie point searching control parameters file (defined separately)
+CP_PARAMETERS_FILE = lndortho.cps_par.ini
+END 

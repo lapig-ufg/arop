@@ -5,13 +5,13 @@
 #
 ##!END
 #############################################################################
-CC = cc -m32
+CC = cc
 
 TARGET = ortho
 
 INC = -I. -I$(MYINC)
 
-LIB = -L$(MYLIB) -lgeotiff  -ltiff $(MYLIB)/geolib.a -lm
+LIB = -L$(MYLIB) -lgeotiff  -ltiff -ljpeg -lz -lsz $(MYLIB)/geolib.a -lm
 
 
 OBJ = lndortho_main.o lndortho_compute.o lndortho_io.o lndortho_util.o lndortho_gchk.o
