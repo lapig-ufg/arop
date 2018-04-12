@@ -28,7 +28,7 @@
 #include "cproj.h"
 #include "proj.h"
 
-#define MAX_STRLEN  1000      /* maximum allowed string length */
+#define MAX_STRLEN  5000      /* maximum allowed string length */
 #define MAX_NBANDS  20        /* maximum number of bands */
 #define MAX_NCOLS   100000    /* maximum number of column of imagery */
 #define BLOCK_NROWS 71        /* number of lines to hold on a data block in memory */
@@ -104,7 +104,7 @@ typedef struct {
   float ulx;              /* x value of up-left corner */
   float uly;              /* y value of up-left corner */
   float res;              /* spatial resolution */
-  uint8 fillValue;        
+  int fillValue;        
   int   nbyte;            /* number of byte for data */
   int   satValue;         /* DN saturation value */
 

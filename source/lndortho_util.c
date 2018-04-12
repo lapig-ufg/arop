@@ -1395,7 +1395,7 @@ int rotateWarp(WARP_LANDSAT *warp)
 	  tmp = data[m][n];
 	else
 	  tmp = warp->lnd.fillValue;	
-	fwrite(&tmp, sizeof(uint8), 1, temp_out);
+	fwrite(&tmp, sizeof(int), 1, temp_out);
       }
 
     /* replace warp with the rotated warp map */
@@ -1549,7 +1549,7 @@ int reproject(WARP_LANDSAT *warp, BASE_LANDSAT *base)
 	else 
 	  tmp = warp->lnd.fillValue;	
 
-	fwrite(&tmp, sizeof(uint8), 1, temp_out);  
+	fwrite(&tmp, sizeof(int), 1, temp_out);  
       }
     } /* end of one image processing */
 
